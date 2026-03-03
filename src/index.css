@@ -1,3 +1,61 @@
+/* ================= MOBILE RESPONSIVE ================= */
+@media (max-width: 768px) {
+
+  /* Header */
+  .header {
+    padding: 15px 20px;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .header nav {
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Hero Section */
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  .hero {
+    padding: 40px 20px;
+  }
+
+  /* Panel */
+  .panel {
+    width: 95%;
+    padding: 25px;
+  }
+
+  /* Background L Image (reduce size) */
+  .bg-decor {
+    background-size: 250px;
+    opacity: 0.05;
+  }
+
+  /* Hide side spoon on phone (too big otherwise) */
+  .side-spoon {
+    display: none;
+  }
+
+  /* Right background character adjust */
+  .bg-right {
+    width: 50%;
+    right: -10%;
+    opacity: 0.15;
+  }
+
+  /* Textarea */
+  textarea {
+    min-height: 120px;
+  }
+}
 body {
   margin: 0;
   font-family: Arial, sans-serif;

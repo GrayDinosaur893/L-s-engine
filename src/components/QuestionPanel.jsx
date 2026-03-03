@@ -16,6 +16,86 @@ function QuestionPanel() {
     return text.toLowerCase().replace(/[^\w\s]/g, "").trim();
   }
 
+  // ================= CHECK ANSWER =================
+
+  function checkAnswer() {
+    if (!answer.trim()) {
+      setResult("Please enter reasoning.");
+      return;
+    }
+
+    const userText = normalize(answer);
+    const wordsCount = userText.split(/\s+/).length;
+
+    const matchedPoints = new Set();
+
+    currentQuestion.keyPoints.forEach((point) => {
+      const normalizedPoint = normalize(point);
+      if (normalizedPoint && userText.includes(normalizedPoint)) {
+        matchedPoints.add(normalizedPoint);
+      }
+    });
+
+    const totalPoints = currentQuestion.keyPoints.length;
+    const matchCount = matchedPoints.size;
+
+    if (totalPoints === 0) {
+      setResult("No evaluation data.");
+      return;
+    }
+
+    let percentage = Math.round((matchCount / totalPoints) * 100);
+
+    // Prevent 1-word 100% inflation
+    if (wordsCount <= 2 && matchCount <= 1) {
+      percentage = Math.min(percentage, 25);
+    }
+
+    // Strong reasoning bonus
+    if (matchCount >= 3 && wordsCount > 5) {
+      percentage = Math.max(percentage, 70);
+    }
+
+    // Clamp boundaries
+    if (percentage > 100) percentage = 100;
+    if (percentage < 0) percentage = 0;
+
+    setResult(`${percentage}% logical alignment`);
+    setScores((prev) => [...prev, percentage]);
+  }
+
+  // ================= SHOW EXPLANATION =================
+
+  function showExplanationHandler() {
+    setShowExplanation(true);
+  }
+
+  // ================= EXPLANATION TIMER =================
+
+  useEffect(() => {
+    if (showExplanation) {
+      setCanProceed(false);
+      const timer = setTimeout(() => {
+        setCanProceed(true);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showExplanation]);
+
+  // ================= NEXT QUESTION =================
+
+  function nextQuestion() {
+    setAnswer("");
+    setResult("");
+    setShowHint(false);
+    setShowExplanation(false);
+    setCanProceed(false);
+    setCurrentIndex((prev) => prev + 1);
+  }
+
+  // ================= FINAL ANALYSIS =================
+
   if (!currentQuestion) {
     const average =
       scores.length > 0
@@ -33,68 +113,13 @@ function QuestionPanel() {
     );
   }
 
-function checkAnswer() {
-  if (!answer.trim()) {
-    setResult("Please enter reasoning.");
-    return;
-  }
-
-  const userText = normalize(answer);
-  const wordsCount = userText.split(/\s+/).length;
-
-  const matchedPoints = new Set();
-
-  currentQuestion.keyPoints.forEach((point) => {
-    const normalizedPoint = normalize(point);
-
-    if (normalizedPoint && userText.includes(normalizedPoint)) {
-      matchedPoints.add(normalizedPoint);
-    }
-  });
-
-  const totalPoints = currentQuestion.keyPoints.length;
-  const matchCount = matchedPoints.size;
-
-  if (totalPoints === 0) {
-    setResult("No evaluation data.");
-    return;
-  }
-
-  let percentage = Math.round((matchCount / totalPoints) * 100);
-
-  // 🚨 Anti one-word 100% protection
-  if (wordsCount <= 2 && matchCount <= 1) {
-    percentage = Math.min(percentage, 25);
-  }
-
-  // Strong reasoning bonus
-  if (matchCount >= 3 && wordsCount > 5) {
-    percentage = Math.max(percentage, 70);
-  }
-
-  // Cap boundaries
-  if (percentage > 100) percentage = 100;
-  if (percentage < 0) percentage = 0;
-
-  setResult(`${percentage}% logical alignment`);
-  setScores((prev) => [...prev, percentage]);
-},[showExplanation]);
-
-  function nextQuestion() {
-    setAnswer("");
-    setResult("");
-    setShowHint(false);
-    setShowExplanation(false);
-    setCanProceed(false);
-    setCurrentIndex((prev) => prev + 1);
-  }
+  // ================= UI =================
 
   return (
     <div className="analysis-wrapper">
       <div className="panel">
         <h2>{currentQuestion.question}</h2>
 
-        {/* Lock input once explanation shown */}
         {!showExplanation && (
           <>
             <textarea
@@ -158,4 +183,4 @@ function checkAnswer() {
   );
 }
 
-export default QuestionPanel;
+export default QuestionPanel; QuestionPanel;

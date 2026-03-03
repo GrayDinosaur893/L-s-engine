@@ -40,8 +40,8 @@ function checkAnswer() {
   }
 
   const userText = normalize(answer);
+  const wordsCount = userText.split(/\s+/).length;
 
-  // Remove duplicate matches
   const matchedPoints = new Set();
 
   currentQuestion.keyPoints.forEach((point) => {
@@ -53,27 +53,32 @@ function checkAnswer() {
   });
 
   const totalPoints = currentQuestion.keyPoints.length;
+  const matchCount = matchedPoints.size;
 
   if (totalPoints === 0) {
     setResult("No evaluation data.");
     return;
   }
 
-  let percentage = Math.round(
-    (matchedPoints.size / totalPoints) * 100
-  );
+  let percentage = Math.round((matchCount / totalPoints) * 100);
 
-  // Smart minimum threshold logic
-  if (matchedPoints.size >= 2 && percentage < 40) {
-    percentage = 40; // basic logical detection
+  // 🚨 Anti one-word 100% protection
+  if (wordsCount <= 2 && matchCount <= 1) {
+    percentage = Math.min(percentage, 25);
   }
 
-  // Cap percentage
+  // Strong reasoning bonus
+  if (matchCount >= 3 && wordsCount > 5) {
+    percentage = Math.max(percentage, 70);
+  }
+
+  // Cap boundaries
   if (percentage > 100) percentage = 100;
+  if (percentage < 0) percentage = 0;
 
   setResult(`${percentage}% logical alignment`);
   setScores((prev) => [...prev, percentage]);
-  },[showExplanation]);
+},[showExplanation]);
 
   function nextQuestion() {
     setAnswer("");

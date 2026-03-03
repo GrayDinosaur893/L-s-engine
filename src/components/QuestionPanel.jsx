@@ -33,42 +33,47 @@ function QuestionPanel() {
     );
   }
 
-  function checkAnswer() {
-    if (!answer.trim()) {
-      setResult("Please enter reasoning.");
-      return;
-    }
-
-    const userText = normalize(answer);
-
-    const matched = currentQuestion.keyPoints.filter((point) => {
-      const normalizedPoint = normalize(point);
-      return userText.includes(normalizedPoint);
-    });
-
-    const percentage = Math.round(
-      (matched.length / currentQuestion.keyPoints.length) * 100
-    );
-
-    setResult(`${percentage}% logical alignment`);
-    setScores((prev) => [...prev, percentage]);
+function checkAnswer() {
+  if (!answer.trim()) {
+    setResult("Please enter reasoning.");
+    return;
   }
 
-  function showExplanationHandler() {
-    setShowExplanation(true);
+  const userText = normalize(answer);
+
+  // Remove duplicate matches
+  const matchedPoints = new Set();
+
+  currentQuestion.keyPoints.forEach((point) => {
+    const normalizedPoint = normalize(point);
+
+    if (normalizedPoint && userText.includes(normalizedPoint)) {
+      matchedPoints.add(normalizedPoint);
+    }
+  });
+
+  const totalPoints = currentQuestion.keyPoints.length;
+
+  if (totalPoints === 0) {
+    setResult("No evaluation data.");
+    return;
   }
 
-  // When explanation appears → start timer
-  useEffect(() => {
-    if (showExplanation) {
-      setCanProceed(false);
-      const timer = setTimeout(() => {
-        setCanProceed(true);
-      }, 5000); // 5 seconds reading time
+  let percentage = Math.round(
+    (matchedPoints.size / totalPoints) * 100
+  );
 
-      return () => clearTimeout(timer);
-    }
-  }, [showExplanation]);
+  // Smart minimum threshold logic
+  if (matchedPoints.size >= 2 && percentage < 40) {
+    percentage = 40; // basic logical detection
+  }
+
+  // Cap percentage
+  if (percentage > 100) percentage = 100;
+
+  setResult(`${percentage}% logical alignment`);
+  setScores((prev) => [...prev, percentage]);
+  },[showExplanation]);
 
   function nextQuestion() {
     setAnswer("");

@@ -1,193 +1,115 @@
-/* ================= GLOBAL RESET ================= */
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html, body {
-  overflow-x: hidden;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  background-color: #111;
-  color: #fff;
-}
-
-/* ===================================================== */
-/* ===================== DESKTOP ======================== */
-/* ===================================================== */
-
-@media (min-width: 769px) {
-
-  /* Header */
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 60px;
-    background-color: #1a1a1a;
-  }
-
-  .logo {
-    font-size: 1.3rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-  }
-
-  .header nav {
-    display: flex;
-    gap: 30px;
-  }
-
-  .header nav span,
-  .header nav a {
-    color: #ccc;
-    cursor: pointer;
-    transition: 0.3s;
-    text-decoration: none;
-  }
-
-  .header nav span:hover,
-  .header nav a:hover {
-    color: white;
-  }
-
-  /* Hero */
-  .hero {
-    min-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 80px 20px;
-  }
-
-  .hero h1 {
-    font-size: 3.5rem;
-    margin-bottom: 20px;
-  }
-
-  .hero p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-    max-width: 700px;
-  }
-
-  /* Panel */
-  .analysis-wrapper {
-    display: flex;
-    justify-content: center;
-    padding: 80px 20px;
-  }
-
-  .panel {
-    background: #1a1a1a;
-    padding: 40px;
-    border-radius: 12px;
-    width: 600px;
-    text-align: center;
-    word-break: break-word;
-  }
-
-  /* Background Elements */
-  .bg-decor {
-    background-size: 500px;
-    opacity: 0.08;
-  }
-
-  .side-spoon {
-    width: 200px;
-    opacity: 0.15;
-  }
-
-  .bg-right {
-    width: 25%;
-    opacity: 0.3;
-  }
-}
-
-/* ===================================================== */
-/* ====================== MOBILE ======================== */
-/* ===================================================== */
-
+/* ================= MOBILE RESPONSIVE ================= */
 @media (max-width: 768px) {
 
   /* Header */
   .header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     padding: 15px 20px;
+    flex-direction: column;
     gap: 15px;
-    background-color: #1a1a1a;
-    text-align: center;
-  }
-
-  .logo {
-    font-size: 1.1rem;
   }
 
   .header nav {
-    display: flex;
     gap: 15px;
     flex-wrap: wrap;
     justify-content: center;
   }
 
-  /* Hero */
-  .hero {
-    padding: 50px 20px;
-    text-align: center;
-  }
-
+  /* Hero Section */
   .hero h1 {
     font-size: 2rem;
-    line-height: 1.3;
   }
 
   .hero p {
     font-size: 1rem;
   }
 
+  .hero {
+    padding: 40px 20px;
+  }
+
   /* Panel */
-  .analysis-wrapper {
-    padding: 40px 15px;
-  }
-
   .panel {
-    width: 100%;
-    padding: 20px;
-    border-radius: 10px;
+    width: 95%;
+    padding: 25px;
   }
 
-  /* Background Elements */
+  /* Background L Image (reduce size) */
   .bg-decor {
-    background-size: 220px;
-    opacity: 0.04;
+    background-size: 250px;
+    opacity: 0.05;
   }
 
+  /* Hide side spoon on phone (too big otherwise) */
   .side-spoon {
     display: none;
   }
 
+  /* Right background character adjust */
   .bg-right {
-    width: 60%;
-    right: -20%;
-    opacity: 0.12;
+    width: 50%;
+    right: -10%;
+    opacity: 0.15;
+  }
+
+  /* Textarea */
+  textarea {
+    min-height: 120px;
   }
 }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #111;
+  color: #fff;
+}
 
-/* ===================================================== */
-/* ================= COMMON STYLES ====================== */
-/* ===================================================== */
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+  background-color: #1a1a1a;
+}
 
-.hero button,
-.submit-btn {
-  padding: 12px 25px;
+.header nav {
+  display: flex;
+  gap: 30px;
+}
+
+.header nav a {
+  text-decoration: none;
+  color: #ccc;
+  font-weight: 500;
+}
+
+.header nav a:hover {
+  color: white;
+}
+
+/* Hero Section */
+.hero {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.hero button {
+  padding: 12px 30px;
+  font-size: 1rem;
   border-radius: 8px;
   border: 1px solid white;
   background: transparent;
@@ -196,89 +118,188 @@ body {
   transition: 0.3s;
 }
 
-.hero button:hover,
-.submit-btn:hover {
+.hero button:hover {
   background: white;
   color: black;
 }
 
-textarea {
-  width: 100%;
-  min-height: 150px;
-  max-height: 300px;
-  padding: 15px;
-  margin: 20px 0;
-  background: #111;
-  color: white;
-  border: 1px solid #444;
-  border-radius: 8px;
-  font-size: 1rem;
-  resize: vertical;
-  overflow-y: auto;
-  line-height: 1.6;
-}
-
-textarea::-webkit-scrollbar {
-  width: 8px;
-}
-
-textarea::-webkit-scrollbar-track {
-  background: #111;
-}
-
-textarea::-webkit-scrollbar-thumb {
-  background: #444;
-  border-radius: 10px;
-}
-
-textarea::-webkit-scrollbar-thumb:hover {
-  background: #666;
-}
-
-.result {
-  margin-top: 20px;
-  font-weight: bold;
-  word-break: break-word;
-}
-
+/* Footer */
 .footer {
   text-align: center;
   padding: 20px;
   background-color: #1a1a1a;
 }
+textarea {
+  width: 100%;
+  min-height: 150px;
+  max-height: 300px;
 
-/* Background Base */
-.bg-decor,
-.side-spoon,
-.bg-right {
+  padding: 15px;
+  margin: 20px 0;
+
+  background: #111;
+  color: white;
+
+  border: 1px solid #444;
+  border-radius: 8px;
+
+  font-size: 1rem;
+  font-family: inherit;
+
+  resize: vertical;
+  overflow-y: auto;
+  box-sizing: border-box;
+
+  line-height: 1.6;
+}
+.analysis-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 80px 20px;
+}
+
+.submit-btn {
+  margin-top: 15px;
+  padding: 10px 25px;
+  border-radius: 8px;
+  border: 1px solid white;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.submit-btn:hover {
+  background: white;
+  color: black;
+}
+
+.result {
+  margin-top: 20px;
+  font-weight: bold;
+}
+.header nav {
+  display: flex;
+  gap: 30px;
+}
+
+.header nav span {
+  cursor: pointer;
+  color: #ccc;
+  transition: 0.3s;
+}
+
+.header nav span:hover {
+  color: white;
+}
+.page-container {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-wrapper {
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Background Decoration Layer */
+.bg-decor {
   position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
   pointer-events: none;
   z-index: 0;
-}
 
-.bg-decor {
-  inset: 0;
   background-image: url("/images/l-tv.png");
   background-repeat: no-repeat;
-  background-position: center;
-}
+  background-position: center center;
+  background-size: 500px;   /* adjust size here */
 
+  opacity: 0.092;
+}
 .side-spoon {
+  position: fixed;
   top: 50%;
   left: 0;
   transform: translateY(-50%);
+  width: 200px;
   height: 500px;
   background-image: url("/images/spoon.png");
   background-repeat: no-repeat;
   background-size: contain;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
   filter: drop-shadow(0 0 40px rgba(255, 0, 0, 0.6));
 }
+.logo {
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  user-select: none;
+}
+.analysis-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 80px 20px;
+}
 
+.panel {
+  background: #1a1a1a;
+  padding: 40px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  max-width: 90%;
+  text-align: center;
+}
+/* Dark Scrollbar for textarea */
+textarea::-webkit-scrollbar {
+  width: 8px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background: #111;  /* same as textarea bg */
+  border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
 .bg-right {
+  position: fixed;
   top: 50%;
+  right: -3%;              /* moves based on screen width */
   transform: translateY(-50%);
+
+  width: 25%;
   height: 60%;
+
   background: url("/images/l-sad.png") no-repeat center;
   background-size: contain;
+
+  opacity: 0.35;
   filter: grayscale(100%) brightness(0.4);
+
+  pointer-events: none;
+  z-index: 0;
+}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
 }

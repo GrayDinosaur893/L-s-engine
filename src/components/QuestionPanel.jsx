@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import questions from "../data/questions";
 
 function QuestionPanel() {
@@ -6,15 +6,16 @@ function QuestionPanel() {
   const [answer, setAnswer] = useState("");
   const [result, setResult] = useState("");
   const [scores, setScores] = useState([]);
+  const [showHint, setShowHint] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
+  const [canProceed, setCanProceed] = useState(false);
 
   const currentQuestion = questions[currentIndex];
 
-  // Normalize helper
   function normalize(text) {
     return text.toLowerCase().replace(/[^\w\s]/g, "").trim();
   }
 
-  // When finished → show analysis
   if (!currentQuestion) {
     const average =
       scores.length > 0
@@ -53,39 +54,98 @@ function QuestionPanel() {
     setScores((prev) => [...prev, percentage]);
   }
 
+  function showExplanationHandler() {
+    setShowExplanation(true);
+  }
+
+  // When explanation appears → start timer
+  useEffect(() => {
+    if (showExplanation) {
+      setCanProceed(false);
+      const timer = setTimeout(() => {
+        setCanProceed(true);
+      }, 5000); // 5 seconds reading time
+
+      return () => clearTimeout(timer);
+    }
+  }, [showExplanation]);
+
   function nextQuestion() {
     setAnswer("");
     setResult("");
+    setShowHint(false);
+    setShowExplanation(false);
+    setCanProceed(false);
     setCurrentIndex((prev) => prev + 1);
   }
 
- return (
-  <div className="analysis-wrapper">
-    <div className="panel">
-      <h2>{currentQuestion.question}</h2>
+  return (
+    <div className="analysis-wrapper">
+      <div className="panel">
+        <h2>{currentQuestion.question}</h2>
 
-      <textarea
-        rows="4"
-        placeholder="Type your reasoning..."
-        value={answer}
-        onChange={(e) => setAnswer(e.target.value)}
-      />
+        {/* Lock input once explanation shown */}
+        {!showExplanation && (
+          <>
+            <textarea
+              rows="4"
+              placeholder="Type your reasoning..."
+              value={answer}
+              onChange={(e) => setAnswer(e.target.value)}
+            />
 
-      <button className="submit-btn" onClick={checkAnswer}>
-        Submit
-      </button>
+            <button className="submit-btn" onClick={checkAnswer}>
+              Submit
+            </button>
 
-      {result && (
-        <>
-          <h3 className="result">{result}</h3>
-          <button className="submit-btn" onClick={nextQuestion}>
-            Next Question
-          </button>
-        </>
-      )}
+            <button
+              className="submit-btn"
+              onClick={() => setShowHint((prev) => !prev)}
+            >
+              {showHint ? "Hide Hint" : "Show Hint"}
+            </button>
+
+            {showHint && (
+              <div className="hint">
+                {currentQuestion.hints?.map((hint, index) => (
+                  <p key={index}>• {hint}</p>
+                ))}
+              </div>
+            )}
+          </>
+        )}
+
+        {result && !showExplanation && (
+          <>
+            <h3 className="result">{result}</h3>
+            <button
+              className="submit-btn"
+              onClick={showExplanationHandler}
+            >
+              View Explanation
+            </button>
+          </>
+        )}
+
+        {showExplanation && (
+          <>
+            <div className="explanation">
+              <h4>Explanation:</h4>
+              <p>{currentQuestion.explanation}</p>
+            </div>
+
+            <button
+              className="submit-btn"
+              onClick={nextQuestion}
+              disabled={!canProceed}
+            >
+              {canProceed ? "Next Question" : "Please read..."}
+            </button>
+          </>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
 }
 
 export default QuestionPanel;

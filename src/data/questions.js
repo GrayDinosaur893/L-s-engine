@@ -11,9 +11,9 @@ const questions = [
     "hot bulb",
     "touch bulb",
     "on off warm",
-    "check heat"
-    "one on one off one heated"
-    "1 on 1 off and 1 heat"
+    "check heat",
+    "one on one off one heated",
+    "1 on 1 off and 1 heat",
   ],
   hints: [
     "Light is not the only observable property.",
@@ -95,7 +95,8 @@ const questions = [
   ],
   explanation: "One prisoner is the counter. Others turn the bulb on once during their first visit. The counter turns it off and counts. When the counter reaches 99, everyone has visited."
 },
-{
+
+ {
   id: 6,
   question: "100 doors are closed. Person 1 toggles every door. Person 2 every second door. Person 3 every third, and so on until 100. Which doors remain open?",
   keyPoints: [
@@ -181,3 +182,4 @@ const questions = [
 }
 ];
 export default questions;
+
